@@ -10,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -17,15 +18,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-public class MainActivity extends AppCompatActivity
-        //implements BottomNavigationView.OnNavigationItemSelectedListener
-        {
+public class MainActivity extends AppCompatActivity{
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
+        toolbar=findViewById(R.id.myToolBar);
+        setSupportActionBar(toolbar);
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -35,39 +37,9 @@ public class MainActivity extends AppCompatActivity
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-        //loadFragment(new NotesFragment());
-
-        //navView.setOnNavigationItemSelectedListener(this);
 
     }
 
-//    @SuppressLint("NonConstantResourceId")
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        Fragment fragment = null;
-//
-//        switch (item.getItemId()) {
-//            case R.id.navigation_notes:
-//                fragment = new NotesFragment();
-//                break;
-//
-//            case R.id.navigation_calendar:
-//                fragment = new CalendarFragment();
-//                break;
-//        }
-//        return loadFragment(fragment);
-//    }
-//
-//    private boolean loadFragment(Fragment fragment) {
-//        if (fragment != null) {
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .replace(R.id.nav_host_fragment, fragment)
-//                    .commit();
-//            return true;
-//        }
-//        return false;
-//    }
 
 
 }
