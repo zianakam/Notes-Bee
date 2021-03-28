@@ -8,4 +8,5 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title_notes">Notes</string>
     <string name="title_calendar">Calendar</string>
+    <string name="add_notes">Add notes</string>
 </resources>
