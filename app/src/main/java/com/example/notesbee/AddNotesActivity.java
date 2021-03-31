@@ -46,6 +46,7 @@ public class AddNotesActivity extends AppCompatActivity {
         Note note = new Note();
         note.title = title.getText().toString();
         note.memo = content.getText().toString();
+        String serial = note.serialize();
 
         // TODO: Serialize and add to database
         // get time and date when the note is created
