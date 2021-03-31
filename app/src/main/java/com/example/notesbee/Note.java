@@ -18,8 +18,11 @@ public class Note {
         try {
             StringBuilder string = new StringBuilder(serial);
             int lengthTitle = Integer.parseInt(string.substring(0, 5));
-            int lengthMemo = Integer.parseInt(string.substring(5 + lengthTitle, 5));
-            int lengthAlarm = Integer.parseInt(string.substring(5 + lengthTitle + 5 + lengthMemo, 5));
+            int lengthMemo = Integer.parseInt(string.substring(5 + lengthTitle, 5 + (5 + lengthTitle)));
+            int lengthAlarm = Integer.parseInt(string.substring(5 + lengthTitle + 5 + lengthMemo, 5 + (5 + lengthTitle + 5 + lengthMemo)));
+            title = string.substring(0, lengthTitle);
+            memo = string.substring(5 + lengthTitle, lengthMemo + (5 + lengthTitle));
+            alarm = new Alarm(string.substring(5 + lengthTitle + 5 + lengthMemo + 5));
         } catch (Exception e) {
             memo = "";
             title = "";
