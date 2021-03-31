@@ -11,7 +11,6 @@ import java.util.Date;
 public class AddNotesActivity extends AppCompatActivity {
     private EditText title;
     private EditText content;
-    private String StringTitle, StringContent;
     private Date date;
     private Time time;
 
@@ -21,8 +20,6 @@ public class AddNotesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_notes);
         title=findViewById(R.id.notesTitle);
         content=findViewById(R.id.notesContent);
-
-
     }
 
 
@@ -45,12 +42,15 @@ public class AddNotesActivity extends AppCompatActivity {
     }
 
     private void addDataToDatabase(){
-        //code for saving data in database
-        StringTitle= title.getText().toString();
-        StringContent= content.getText().toString();
-        //get time and date when the note is created
+        // We will save all data in a note class then serialize it
+        Note note = new Note();
+        note.title = title.getText().toString();
+        note.memo = content.getText().toString();
 
-        //save all four varibles tpo the database
+        // TODO: Serialize and add to database
+        // get time and date when the note is created
+
+        // save all four varibles tpo the database
 
     }
 }

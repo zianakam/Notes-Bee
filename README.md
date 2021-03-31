@@ -7,5 +7,4 @@ COMP370 group project from
  + Asmita Kotkar
  + Paolo Mazzon
  + Arzaan Mistry
- + Malik Tang
 
