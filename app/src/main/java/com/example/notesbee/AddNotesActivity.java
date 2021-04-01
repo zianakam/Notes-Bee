@@ -5,14 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 
-import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class AddNotesActivity extends AppCompatActivity {
     private EditText title;
     private EditText content;
-    private Date date;
-    private Time time;
+    private String dateTime;
+    private Calendar calendar;
+    private SimpleDateFormat simpleDateFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +53,12 @@ public class AddNotesActivity extends AppCompatActivity {
 
         // TODO: Serialize and add to database
         // get time and date when the note is created
+        calendar = Calendar.getInstance();
+        simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss aaa z");
+        dateTime = simpleDateFormat.format(calendar.getTime()).toString();
 
-        // save all four varibles tpo the database
+        // save all three variables to the database
+
 
     }
 }
