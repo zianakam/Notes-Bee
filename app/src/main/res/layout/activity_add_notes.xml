@@ -32,6 +32,7 @@
         android:id="@+id/imageView"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:onClick="startVoiceToText"
         app:layout_constraintBottom_toBottomOf="@+id/notesContent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -57,12 +58,13 @@
         android:layout_height="wrap_content"
         android:onClick="setAlarm"
         android:text="Alarm"
+        app:icon="@android:drawable/ic_lock_idle_alarm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.98"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/notesTitle"
-        app:layout_constraintVertical_bias="0.86" />
+        app:layout_constraintVertical_bias="0.89" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,6 +64,13 @@ public class AddNotesActivity extends AppCompatActivity {
     }
 
     /**
+     * Begins voice recognition, this is called when the microphone icon is presesd.
+     */
+    public void startVoiceToText(View view) {
+
+    }
+
+    /**
      * Adds the message currently written to the database, called whenever something would
      * cause this message screen to close.
      */
