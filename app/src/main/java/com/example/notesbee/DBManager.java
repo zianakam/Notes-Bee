@@ -26,13 +26,13 @@ public class DBManager {
         dbHelper.close();
     }
 
-    public void insert(String name, String desc){
+    public void insert(String name, String desc){/*
         ContentValues contentValues = new ContentValues();
         contentValues.put(Database.SUBJECT, name);
         contentValues.put(Database.DESC, desc);
-        database.insert(Database.TABLE_NAME, null, contentValues);
+        database.insert(Database.TABLE_NAME, null, contentValues);*/
     }
-    public Cursor fetch(){
+    public Cursor fetch(){/*
         String[] columns = new String[] {Database.ID,
         Database.SUBJECT, Database.DESC};
 
@@ -47,10 +47,11 @@ public class DBManager {
         if(cursor != null){
             cursor.moveToFirst();
         }
-        return cursor;
+        return cursor;*/
+        return null;
     }
 
-    public int update(long id, String name, String desc){
+    public int update(long id, String name, String desc){/*
         ContentValues contentValues = new ContentValues();
         contentValues.put(Database.SUBJECT, name);
         contentValues.put(Database.DESC, desc);
@@ -58,7 +59,8 @@ public class DBManager {
         int i = database.update(Database.TABLE_NAME,
                 contentValues, Database.ID +
                 " = " + id, null);
-        return i;
+        return i;*/
+        return 0;
     }
     public void delete(long id){
         database.delete(Database.TABLE_NAME,Database.ID +

@@ -11,9 +11,9 @@ public class Database extends SQLiteOpenHelper {
 
     //TABLE COLUMNS
     public static final String ID = "id";
-    public static final String SUBJECT = "subject";
+    public static final String TITLE = "title";
     public static final String DESC = "description";
-
+    public static final String DATE = "date";
     //DATABASE INFORMATION
     public static final String DATABASE_NAME = "NOTES_BEE.DB";
 
@@ -27,9 +27,11 @@ public class Database extends SQLiteOpenHelper {
             " ("
             + ID +
             " INTEGER PRIMARY KEY, "
-            + SUBJECT +
+            + TITLE +
             " TEXT NOT NULL, "
             + DESC +
+            " TEXT, "
+            + DATE +
             " TEXT);"
             ;
 
@@ -49,6 +51,5 @@ public class Database extends SQLiteOpenHelper {
         db.execSQL("Drop Table if Exists " + TABLE_NAME);
         onCreate(db);
     }
-
     //
 }
