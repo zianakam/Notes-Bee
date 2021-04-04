@@ -28,13 +28,14 @@ public class DBManager {
 
     public void insert(String name, String desc){
         ContentValues contentValues = new ContentValues();
-        contentValues.put(Database.SUBJECT, name);
+        contentValues.put(Database.TITLE, name);
         contentValues.put(Database.DESC, desc);
+        contentValues.put(Database.DATE, date);
         database.insert(Database.TABLE_NAME, null, contentValues);
     }
     public Cursor fetch(){
         String[] columns = new String[] {Database.ID,
-        Database.SUBJECT, Database.DESC};
+        Database.TITLE, Database.DESC, Database.DATE};
 
         Cursor cursor = database.query(Database.TABLE_NAME,
                 columns,
@@ -52,8 +53,9 @@ public class DBManager {
 
     public int update(long id, String name, String desc){
         ContentValues contentValues = new ContentValues();
-        contentValues.put(Database.SUBJECT, name);
+        contentValues.put(Database.TITLE, name);
         contentValues.put(Database.DESC, desc);
+        contentValues.put(Database.DATE, date);
 
         int i = database.update(Database.TABLE_NAME,
                 contentValues, Database.ID +
