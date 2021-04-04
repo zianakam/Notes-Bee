@@ -2,9 +2,11 @@ package com.example.notesbee;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
@@ -20,6 +22,11 @@ public class AddNotesActivity extends AppCompatActivity {
     private Calendar calendar;
     private SimpleDateFormat simpleDateFormat;
 
+    // For choosing date and time of an alarm
+    private int year;
+    private int month;
+    private int day;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +34,6 @@ public class AddNotesActivity extends AppCompatActivity {
         title=findViewById(R.id.notesTitle);
         content=findViewById(R.id.notesContent);
     }
-
 
     @Override
     protected void onPause() {
@@ -51,7 +57,20 @@ public class AddNotesActivity extends AppCompatActivity {
      * Function called when the time is chosen from the alarm.
      */
     public void onTimeChanged(TimePicker view, int hour, int minute) {
-        System.out.println(hour + ":" + minute);
+        System.out.println("Alarm set for " + year + "-" + month + "-" + day + " @ " + hour + ":" + minute);
+        // TODO: Make an alarm for the chosen time
+    }
+
+    /**
+     * This is called when the user chooses a date for the alarm, to which it will save the date
+     * and present the time picker
+     */
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        this.year = year;
+        this.month = month;
+        this.day = dayOfMonth;
+        TimePickerDialog timePickerDialog = new TimePickerDialog(view.getContext(), this::onTimeChanged, 0, 0, false);
+        timePickerDialog.show();
     }
 
     /**
@@ -59,8 +78,8 @@ public class AddNotesActivity extends AppCompatActivity {
      * It will launch a dialogue to select a time and schedule an alarm for that time.
      */
     public void setAlarm(View view) {
-        TimePickerDialog timePickerDialog = new TimePickerDialog(view.getContext(), this::onTimeChanged, 0, 0, false);
-        timePickerDialog.show();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(view.getContext(), this::onDateSet, 0, 0, 0);
+        datePickerDialog.show();
     }
 
     /**
