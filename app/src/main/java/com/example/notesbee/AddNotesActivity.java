@@ -2,8 +2,11 @@ package com.example.notesbee;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -60,5 +63,10 @@ public class AddNotesActivity extends AppCompatActivity {
         // save all three variables to the database
 
 
+    }
+
+    public void startRecognition (View view) {
+        Intent intent = new Intent(this, VoiceRecognition.class);
+        startActivity(intent);
     }
 }

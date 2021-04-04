@@ -1,10 +1,19 @@
 package com.example.notesbee;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +28,7 @@ import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
 
 import static android.widget.Toast.makeText;
+import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
 import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
 
 public class VoiceRecognition extends Activity implements
@@ -66,11 +76,37 @@ public class VoiceRecognition extends Activity implements
     public void onCreate(Bundle state) {
         super.onCreate(state);
 
-        captions = new HashMap<>();
+        requestUserPermission();
+
+        //captions = new HashMap<>();
         //captions.put(KWS_SEARCH, R.string.kws_caption);
 
-        setupTask(VoiceRecognition.this);
     }
+
+    private void requestUserPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO},
+                    PERMISSIONS_REQUEST_RECORD_AUDIO);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_RECORD_AUDIO:
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //setupTask(this);
+                }  else {
+                    finish(); //calls onDestroy
+                }
+                return;
+        }
+    }
+
 
     public void setupTask(VoiceRecognition activity) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
