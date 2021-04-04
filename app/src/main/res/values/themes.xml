@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.NotesBee" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimary">#AAAAAA</item> <!-- I changed this so the text wasn't white-on-white - Paolo -->
         <item name="colorPrimaryVariant">@color/brown1</item>
         <item name="colorOnPrimary">@color/brown2</item>
         <!-- Secondary brand color. -->

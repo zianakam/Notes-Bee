@@ -3,19 +3,18 @@ package com.example.notesbee;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.sql.Time;
 import java.util.Date;
 
 public class AddNotesActivity extends AppCompatActivity {
     private EditText title;
     private EditText content;
-    private String dateTime;
-    private Calendar calendar;
-    private SimpleDateFormat simpleDateFormat;
+    private Date date;
+    private Time time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +22,13 @@ public class AddNotesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_notes);
         title=findViewById(R.id.notesTitle);
         content=findViewById(R.id.notesContent);
+        ImageButton savenotes= findViewById(R.id.save_note_btn);
+        savenotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addDataToDatabase();
+            }
+        });
     }
 
 
@@ -53,12 +59,8 @@ public class AddNotesActivity extends AppCompatActivity {
 
         // TODO: Serialize and add to database
         // get time and date when the note is created
-        calendar = Calendar.getInstance();
-        simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss aaa z");
-        dateTime = simpleDateFormat.format(calendar.getTime()).toString();
 
-        // save all three variables to the database
-
+        // save all four variables to the database
 
     }
 }
