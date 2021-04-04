@@ -3,7 +3,9 @@ package com.example.notesbee;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import java.sql.Time;
 import java.util.Date;
@@ -20,6 +22,13 @@ public class AddNotesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_notes);
         title=findViewById(R.id.notesTitle);
         content=findViewById(R.id.notesContent);
+        ImageButton savenotes= findViewById(R.id.save_note_btn);
+        savenotes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addDataToDatabase();
+            }
+        });
     }
 
 
@@ -51,7 +60,7 @@ public class AddNotesActivity extends AppCompatActivity {
         // TODO: Serialize and add to database
         // get time and date when the note is created
 
-        // save all four varibles tpo the database
+        // save all four variables to the database
 
     }
 }
