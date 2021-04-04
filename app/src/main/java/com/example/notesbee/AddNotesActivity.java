@@ -78,12 +78,13 @@ public class AddNotesActivity extends AppCompatActivity {
      * It will launch a dialogue to select a time and schedule an alarm for that time.
      */
     public void setAlarm(View view) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(view.getContext(), this::onDateSet, 0, 0, 0);
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(view.getContext(), this::onDateSet, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
     }
 
     /**
-     * Begins voice recognition, this is called when the microphone icon is presesd.
+     * Begins voice recognition, this is called when the microphone icon is pressed.
      */
     public void startVoiceToText(View view) {
 
