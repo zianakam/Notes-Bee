@@ -2,19 +2,31 @@ package com.example.notesbee;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TimePicker;
 
-import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class AddNotesActivity extends AppCompatActivity {
     private EditText title;
     private EditText content;
-    private Date date;
-    private Time time;
+    private String dateTime;
+    private Calendar calendar;
+    private SimpleDateFormat simpleDateFormat;
+
+    // For choosing date and time of an alarm
+    private int year;
+    private int month;
+    private int day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +42,6 @@ public class AddNotesActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     protected void onPause() {
@@ -50,6 +61,47 @@ public class AddNotesActivity extends AppCompatActivity {
         addDataToDatabase();
     }
 
+    /**
+     * Function called when the time is chosen from the alarm.
+     */
+    public void onTimeChanged(TimePicker view, int hour, int minute) {
+        System.out.println("Alarm set for " + year + "-" + month + "-" + day + " @ " + hour + ":" + minute);
+        // TODO: Make an alarm for the chosen time
+    }
+
+    /**
+     * This is called when the user chooses a date for the alarm, to which it will save the date
+     * and present the time picker
+     */
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        this.year = year;
+        this.month = month;
+        this.day = dayOfMonth;
+        TimePickerDialog timePickerDialog = new TimePickerDialog(view.getContext(), this::onTimeChanged, 0, 0, false);
+        timePickerDialog.show();
+    }
+
+    /**
+     * The function that is called when the "Alarm" button is pressed.
+     * It will launch a dialogue to select a time and schedule an alarm for that time.
+     */
+    public void setAlarm(View view) {
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(view.getContext(), this::onDateSet, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        datePickerDialog.show();
+    }
+
+    /**
+     * Begins voice recognition, this is called when the microphone icon is pressed.
+     */
+    public void startVoiceToText(View view) {
+
+    }
+
+    /**
+     * Adds the message currently written to the database, called whenever something would
+     * cause this message screen to close.
+     */
     private void addDataToDatabase(){
         // We will save all data in a note class then serialize it
         Note note = new Note();

@@ -77,6 +77,20 @@
         app:layout_constraintStart_toEndOf="@+id/notesTitle"
         app:layout_constraintTop_toBottomOf="@+id/include2"
         app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="setAlarm"
+        android:text="Alarm"
+        app:icon="@android:drawable/ic_lock_idle_alarm"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/notesTitle"
+        app:layout_constraintVertical_bias="0.935" />
 <!--    android:background="@drawable/round_shape_btn"-->
 
 
