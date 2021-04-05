@@ -1,24 +1,32 @@
 package com.example.notesbee;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+
+import java.time.Duration;
+import java.time.temporal.Temporal;
 import java.util.Date;
 import java.text.DateFormat;
 
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class Note {
     public String memo;
     public String title;
     public Alarm alarm;
+    public AlarmManager alarmManager;
 
     // For choosing date and time of an alarm
     private int year;
@@ -58,8 +66,19 @@ public class Note {
      * Function called when the time is chosen from the alarm.
      */
     public void onTimeChanged(TimePicker view, int hour, int minute) {
+        // Debug
         System.out.println("Alarm set for " + year + "-" + month + "-" + day + " @ " + hour + ":" + minute);
-        // TODO: Make an alarm for the chosen time
+
+        // Create a calendar with the chosen date/time on it and a base calendar with current time
+        Calendar alarmDate = Calendar.getInstance();
+        alarmDate.set(year, month, day, hour, minute);
+        Calendar currentDate = Calendar.getInstance(TimeZone.getDefault());
+
+        // Calculate the time between
+        long timeBetweenInMilliseconds = alarmDate.getTimeInMillis() - currentDate.getTimeInMillis();
+
+        // Create an alarm for that time TODO: Make alarm intent
+        //alarmManager.set(AlarmManager.RTC, timeBetweenInMilliseconds, alarmIntent);
     }
 
     /**
@@ -82,6 +101,9 @@ public class Note {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context, this::onDateSet, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
+
+        // Get the alarm manager while we have the context
+        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
     }
 
     /**
