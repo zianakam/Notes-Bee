@@ -8,10 +8,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import java.text.DateFormat;
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class AddNotesActivity extends AppCompatActivity {
     private EditText title;
@@ -19,6 +18,7 @@ public class AddNotesActivity extends AppCompatActivity {
     private String dateTime;
     private Calendar calendar;
     private SimpleDateFormat simpleDateFormat;
+    public static WeakReference<AddNotesActivity> weakActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,7 @@ public class AddNotesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_notes);
         title=findViewById(R.id.notesTitle);
         content=findViewById(R.id.notesContent);
+        weakActivity = new WeakReference<>(this);
     }
 
 
@@ -65,8 +66,17 @@ public class AddNotesActivity extends AppCompatActivity {
 
     }
 
-    public void startRecognition (View view) {
+    public void startVoiceRecognition (View view) {
         Intent intent = new Intent(this, VoiceRecognition.class);
         startActivity(intent);
+    }
+
+    public static AddNotesActivity getInstanceActivity() {
+        return weakActivity.get();
+    }
+
+    public void setText(String text) {
+        TextView textView = (TextView)findViewById(R.id.caption_text);
+        textView.setText(text);
     }
 }

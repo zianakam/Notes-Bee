@@ -19,20 +19,20 @@
         android:id="@+id/notesContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@null"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/notesTitle"/>
+        app:layout_constraintTop_toBottomOf="@id/notesTitle" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:onClick="startRecognition"
+        android:onClick="startVoiceRecognition"
         app:layout_constraintBottom_toBottomOf="@+id/notesContent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -51,5 +51,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include2" />
+
+    <TextView
+        android:id="@+id/caption_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="332dp"
+        android:text="Example"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

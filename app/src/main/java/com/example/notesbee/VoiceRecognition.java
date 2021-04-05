@@ -2,10 +2,14 @@ package com.example.notesbee;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,34 +80,36 @@ public class VoiceRecognition extends Activity implements
     public void onCreate(Bundle state) {
         super.onCreate(state);
 
+        String text = "Updated";
+        AddNotesActivity.getInstanceActivity().setText(text);
+
         requestUserPermission();
-
-        //captions = new HashMap<>();
-        //captions.put(KWS_SEARCH, R.string.kws_caption);
-
+        //setupTask(this);
     }
 
     private void requestUserPermission() {
         if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) { //if permission never granted, request
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.RECORD_AUDIO},
                     PERMISSIONS_REQUEST_RECORD_AUDIO);
+        } else { //else continue
+            finish();
         }
     }
 
+
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, //only applies if user responds to permission query
                                            int[] grantResults) {
-        switch (requestCode) {
+        switch (requestCode) { //catch request
             case PERMISSIONS_REQUEST_RECORD_AUDIO:
                 if (grantResults.length > 0 &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //setupTask(this);
-                }  else {
-                    finish(); //calls onDestroy
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) { //if request granted
+                    setupTask(this);
+                }  else { //else need to return to addnotes (setup onDestroy)
+                    finish();
                 }
-                return;
         }
     }
 
@@ -136,9 +142,8 @@ public class VoiceRecognition extends Activity implements
     private void switchSearch(String searchName) {
         recognizer.stop();
 
-        if (searchName.equals(KWS_SEARCH))
-            recognizer.startListening(searchName);
-
+        //if (searchName.equals(KWS_SEARCH))
+        //recognizer.startListening(searchName, 10000);
         //String caption = getResources().getString(captions.get(searchName));
         //((TextView) findViewById(R.id.caption_text)).setText(caption);
     }
@@ -172,4 +177,5 @@ public class VoiceRecognition extends Activity implements
     public void onError(Exception error) {
         //TO DO:
     }
+
 }
