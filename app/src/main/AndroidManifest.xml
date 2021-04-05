@@ -12,6 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.NotesBee">
+        <service
+            android:name=".NoteAlarmService"
+            android:exported="false"></service>
+
         <activity android:name=".AddNotesActivity" />
         <activity
             android:name=".MainActivity"

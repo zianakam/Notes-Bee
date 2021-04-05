@@ -2,6 +2,7 @@ package com.example.notesbee;
 
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,15 +24,19 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class Note {
+    public static final int ALARM_BROADCAST = 84138; // Random number to identify the intents with
     public String memo;
     public String title;
     public Alarm alarm;
-    public AlarmManager alarmManager;
 
     // For choosing date and time of an alarm
     private int year;
     private int month;
     private int day;
+
+    // Internal alarm things
+    private AlarmManager alarmManager;
+    private Context context;
 
     /**
      * Initializes a note with nothing in it.
@@ -77,8 +82,12 @@ public class Note {
         // Calculate the time between
         long timeBetweenInMilliseconds = alarmDate.getTimeInMillis() - currentDate.getTimeInMillis();
 
-        // Create an alarm for that time TODO: Make alarm intent
-        //alarmManager.set(AlarmManager.RTC, timeBetweenInMilliseconds, alarmIntent);
+        // Create the intent
+        Intent alarmIntent = new Intent(context, NoteAlarmService.class);
+        alarmIntent.putExtra("com.example.notesbee.extra.BODY", title);
+
+        // Create an alarm for that time
+        alarmManager.set(AlarmManager.RTC, timeBetweenInMilliseconds, PendingIntent.getBroadcast(context, ALARM_BROADCAST, alarmIntent, PendingIntent.FLAG_ONE_SHOT));
     }
 
     /**
@@ -101,6 +110,7 @@ public class Note {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context, this::onDateSet, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
+        this.context = context;
 
         // Get the alarm manager while we have the context
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

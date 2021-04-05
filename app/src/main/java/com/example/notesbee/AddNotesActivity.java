@@ -57,6 +57,9 @@ public class AddNotesActivity extends AppCompatActivity {
      * It will launch a dialogue to select a time and schedule an alarm for that time.
      */
     public void setAlarm(View view) {
+        // Must update note contents before setting alarm so the contents are visible to the future notification
+        note.title = title.getText().toString();
+        note.memo = content.getText().toString();
         note.createAlarm(view.getContext());
     }
 
