@@ -3,6 +3,7 @@ package com.example.notesbee;
 import androidx.appcompat.app.AppCompatActivity;
 import jp.wasabeef.richeditor.RichEditor;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -52,11 +53,74 @@ public class AddNotesActivity extends AppCompatActivity {
         findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                notesContent.undo();
             }
         });
 
+        findViewById(R.id.action_redo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notesContent.redo();
+            }
+        });
 
+        findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notesContent.setBold();
+            }
+        });
+
+        findViewById(R.id.action_italic).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notesContent.setItalic();
+            }
+        });
+
+        findViewById(R.id.action_strikethrough).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notesContent.setStrikeThrough();
+            }
+        });
+
+        findViewById(R.id.action_underline).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                notesContent.setUnderline();
+            }
+        });
+
+        findViewById(R.id.action_txt_color).setOnClickListener(new View.OnClickListener() {
+            private Boolean isChanged=true;
+            @Override
+            public void onClick(View view) {
+                notesContent.setTextColor(isChanged ? Color.BLACK: Color.RED);
+                isChanged = !isChanged;
+            }
+        });
+
+        findViewById(R.id.action_insert_bullets).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notesContent.setBullets();
+            }
+        });
+
+        findViewById(R.id.action_insert_numbers).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notesContent.setNumbers();
+            }
+        });
+
+        findViewById(R.id.action_insert_checkbox).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notesContent.insertTodo();
+            }
+        });
 
 
 
