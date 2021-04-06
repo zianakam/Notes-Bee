@@ -71,8 +71,9 @@ public class Note {
      * Function called when the time is chosen from the alarm.
      */
     public void onTimeChanged(TimePicker view, int hour, int minute) {
-        // Debug
+        // Debug and set alarm
         System.out.println("Alarm set for " + year + "-" + month + "-" + day + " @ " + hour + ":" + minute);
+        alarm.set(year, month, day, hour, minute);
 
         // Create a calendar with the chosen date/time on it and a base calendar with current time
         Calendar alarmDate = Calendar.getInstance();
