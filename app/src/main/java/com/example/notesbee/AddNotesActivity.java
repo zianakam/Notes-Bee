@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -18,7 +19,7 @@ public class AddNotesActivity extends AppCompatActivity {
     private EditText title;
     private RichEditor notesContent;
     private Boolean alarm;
-    private LocalDateTime dateTime;
+    private Date currentDateTime;
     //private String dateTime;
     //private Calendar calendar;
     //private SimpleDateFormat simpleDateFormat;
@@ -169,9 +170,29 @@ public class AddNotesActivity extends AppCompatActivity {
      * cause this message screen to close.
      */
     private void addDataToDatabase(){
+
         // We will save all data in a note class then serialize it
         note.title = title.getText().toString();
         String serial = note.serialize();
+
+        alarm=true;
+        currentDateTime=Calendar.getInstance().getTime();
+
+        String titleTXT = title.getText().toString();
+        String contentTXT = notesContent.getHtml();
+        String dateTXT = currentDateTime.toString();
+        String alarmTXT = alarm.toString();
+
+
+        DBHelper DH= new DBHelper(AddNotesActivity.this);
+
+        Boolean check_insert_data = DH.insert_user_data(titleTXT, contentTXT, dateTXT, alarmTXT);
+
+        if(check_insert_data)
+            Toast.makeText(AddNotesActivity.this, "New Entry Inserted", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(AddNotesActivity.this, "New Entry Not Inserted", Toast.LENGTH_SHORT).show();
+
 
         // TODO: Serialize and add to database
         // get time and date when the note is created
