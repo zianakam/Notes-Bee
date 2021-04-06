@@ -1,6 +1,7 @@
 package com.example.notesbee;
 
 import androidx.appcompat.app.AppCompatActivity;
+import jp.wasabeef.richeditor.RichEditor;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,22 +9,27 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddNotesActivity extends AppCompatActivity {
     private EditText title;
-    private EditText content;
-    private String dateTime;
-    private Calendar calendar;
-    private SimpleDateFormat simpleDateFormat;
+    private RichEditor notesContent;
+    private Boolean alarm;
+    private LocalDateTime dateTime;
+    //private String dateTime;
+    //private Calendar calendar;
+    //private SimpleDateFormat simpleDateFormat;
     private Note note; // Local note used to create alarms and build the save/load with
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_notes);
         title=findViewById(R.id.notesTitle);
-        content=findViewById(R.id.notesContent);
         ImageButton savenotes= findViewById(R.id.save_note_btn);
         savenotes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,6 +38,30 @@ public class AddNotesActivity extends AppCompatActivity {
             }
         });
         note = new Note();
+
+        // Save data to the database on clicking the save button
+        findViewById(R.id.save_note_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addDataToDatabase();
+            }
+        });
+
+
+        notesContent= findViewById(R.id.notesContent);
+        findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+
+
+
+
+
+
     }
 
     @Override
@@ -59,7 +89,7 @@ public class AddNotesActivity extends AppCompatActivity {
     public void setAlarm(View view) {
         // Must update note contents before setting alarm so the contents are visible to the future notification
         note.title = title.getText().toString();
-        note.memo = content.getText().toString();
+        //note.memo = content.getText().toString();
         note.createAlarm(view.getContext());
     }
 
@@ -77,7 +107,6 @@ public class AddNotesActivity extends AppCompatActivity {
     private void addDataToDatabase(){
         // We will save all data in a note class then serialize it
         note.title = title.getText().toString();
-        note.memo = content.getText().toString();
         String serial = note.serialize();
 
         // TODO: Serialize and add to database
