@@ -84,10 +84,10 @@ public class Note {
 
         // Create the intent
         Intent alarmIntent = new Intent(context, NoteAlarmService.class);
-        alarmIntent.putExtra("com.example.notesbee.extra.BODY", title);
+        alarmIntent.putExtra(NoteAlarmService.EXTRA_BODY, title);
 
         // Create an alarm for that time
-        alarmManager.set(AlarmManager.RTC, timeBetweenInMilliseconds, PendingIntent.getBroadcast(context, ALARM_BROADCAST, alarmIntent, PendingIntent.FLAG_ONE_SHOT));
+        alarmManager.set(AlarmManager.RTC, timeBetweenInMilliseconds > 0 ? timeBetweenInMilliseconds : 0, PendingIntent.getService(context, ALARM_BROADCAST, alarmIntent, 0));
     }
 
     /**

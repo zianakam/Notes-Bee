@@ -11,29 +11,13 @@ import android.content.Context;
  */
 public class NoteAlarmService extends IntentService {
 
-    // TODO: Rename actions, choose action names that describe tasks that this
     // IntentService can perform, e.g. ACTION_FETCH_NEW_ITEMS
-    private static final String ACTION_NOTIFY = "com.example.notesbee.action.NOTIFY";
+    public static final String ACTION_NOTIFY = "com.example.notesbee.action.NOTIFY";
 
-    // TODO: Rename parameters
-    private static final String EXTRA_BODY = "com.example.notesbee.extra.BODY";
+    public static final String EXTRA_BODY = "com.example.notesbee.extra.BODY";
 
     public NoteAlarmService() {
         super("NoteAlarmService");
-    }
-
-    /**
-     * Starts this service to perform action Foo with the given parameters. If
-     * the service is already performing a task this action will be queued.
-     *
-     * @see IntentService
-     */
-    // TODO: Customize helper method
-    public static void startActionFoo(Context context, String param1, String param2) {
-        Intent intent = new Intent(context, NoteAlarmService.class);
-        intent.setAction(ACTION_NOTIFY);
-        intent.putExtra(EXTRA_BODY, param1);
-        context.startService(intent);
     }
 
     @Override
@@ -48,7 +32,7 @@ public class NoteAlarmService extends IntentService {
     }
 
     /**
-     * Handle action Foo in the provided background thread with the provided
+     * Handle action notify in the provided background thread with the provided
      * parameters.
      */
     private void handleActionNotify(String body) {
