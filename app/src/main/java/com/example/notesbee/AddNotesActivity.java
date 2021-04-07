@@ -38,12 +38,13 @@ public class AddNotesActivity extends AppCompatActivity {
         findViewById(R.id.save_note_btn).setOnClickListener(view -> addDataToDatabase());
 
         // Set a reminder for the note
-        findViewById(R.id.reminder_btn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        findViewById(R.id.reminder_btn).setOnClickListener(this::setAlarm);
 
-            }
-        });
+        // On clicked starts voice-to-text
+        findViewById(R.id.vtt_btn).setOnClickListener(this::startVoiceToText);
+
+        //Or if long pressed start voice-to_text
+        //findViewById(R.id.vtt_btn).setOnLongClickListener(view -> startVoiceToText(view));
 
 
         notesContent= findViewById(R.id.notesContent);

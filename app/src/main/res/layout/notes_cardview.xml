@@ -20,9 +20,10 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:background="@null"
             app:layout_constraintEnd_toStartOf="@+id/cardview_delete_btn"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/bell_icon"
+            app:srcCompat="@drawable/no_bell_icon"
             tools:ignore="VectorDrawableCompat" />
 
         <ImageButton
