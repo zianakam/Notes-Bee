@@ -8,5 +8,6 @@
     android:background="@color/brown4"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:elevation="10dp"
-    app:logo="@drawable/logo">
+    android:padding="8dp"
+    app:logo="@drawable/app_logo">
 </androidx.appcompat.widget.Toolbar>

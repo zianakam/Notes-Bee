@@ -10,8 +10,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -33,65 +31,34 @@ public class AddNotesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_notes);
         title=findViewById(R.id.notesTitle);
         ImageButton savenotes= findViewById(R.id.save_note_btn);
-        savenotes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addDataToDatabase();
-            }
-        });
+        savenotes.setOnClickListener(view -> addDataToDatabase());
         note = new Note();
 
         // Save data to the database on clicking the save button
-        findViewById(R.id.save_note_btn).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.save_note_btn).setOnClickListener(view -> addDataToDatabase());
+
+        // Set a reminder for the note
+        findViewById(R.id.reminder_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addDataToDatabase();
+
             }
         });
 
 
         notesContent= findViewById(R.id.notesContent);
-        findViewById(R.id.action_undo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                notesContent.undo();
-            }
-        });
 
-        findViewById(R.id.action_redo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                notesContent.redo();
-            }
-        });
+        findViewById(R.id.action_undo).setOnClickListener(view -> notesContent.undo());
 
-        findViewById(R.id.action_bold).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                notesContent.setBold();
-            }
-        });
+        findViewById(R.id.action_redo).setOnClickListener(view -> notesContent.redo());
 
-        findViewById(R.id.action_italic).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                notesContent.setItalic();
-            }
-        });
+        findViewById(R.id.action_bold).setOnClickListener(view -> notesContent.setBold());
 
-        findViewById(R.id.action_strikethrough).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                notesContent.setStrikeThrough();
-            }
-        });
+        findViewById(R.id.action_italic).setOnClickListener(view -> notesContent.setItalic());
 
-        findViewById(R.id.action_underline).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                notesContent.setUnderline();
-            }
-        });
+        findViewById(R.id.action_strikethrough).setOnClickListener(view -> notesContent.setStrikeThrough());
+
+        findViewById(R.id.action_underline).setOnClickListener(view -> notesContent.setUnderline());
 
         findViewById(R.id.action_txt_color).setOnClickListener(new View.OnClickListener() {
             private Boolean isChanged=true;
@@ -102,50 +69,32 @@ public class AddNotesActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.action_insert_bullets).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notesContent.setBullets();
-            }
-        });
+        findViewById(R.id.action_insert_bullets).setOnClickListener(v -> notesContent.setBullets());
 
-        findViewById(R.id.action_insert_numbers).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notesContent.setNumbers();
-            }
-        });
+        findViewById(R.id.action_insert_numbers).setOnClickListener(v -> notesContent.setNumbers());
 
-        findViewById(R.id.action_insert_checkbox).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notesContent.insertTodo();
-            }
-        });
-
-
-
+        findViewById(R.id.action_insert_checkbox).setOnClickListener(v -> notesContent.insertTodo());
 
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        addDataToDatabase();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        addDataToDatabase();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        addDataToDatabase();
-    }
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        addDataToDatabase();
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        addDataToDatabase();
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        addDataToDatabase();
+//    }
 
     /**
      * The function that is called when the "Alarm" button is pressed.
@@ -155,6 +104,7 @@ public class AddNotesActivity extends AppCompatActivity {
         // Must update note contents before setting alarm so the contents are visible to the future notification
         note.title = title.getText().toString();
         //note.memo = content.getText().toString();
+        note.memo = notesContent.getHtml();
         note.createAlarm(view.getContext());
     }
 
