@@ -3,6 +3,7 @@ package com.example.notesbee;
 import androidx.appcompat.app.AppCompatActivity;
 import jp.wasabeef.richeditor.RichEditor;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -16,8 +17,6 @@ import java.util.Date;
 public class AddNotesActivity extends AppCompatActivity {
     private EditText title;
     private RichEditor notesContent;
-    private Boolean alarm;
-    private Date currentDateTime;
     //private String dateTime;
     //private Calendar calendar;
     //private SimpleDateFormat simpleDateFormat;
@@ -131,28 +130,29 @@ public class AddNotesActivity extends AppCompatActivity {
     private void addDataToDatabase(){
 
         // We will save all data in a note class then serialize it
-        note.title = title.getText().toString();
-        String serial = note.serialize();
+//        note.title = title.getText().toString();
+//        String serial = note.serialize();
+//        Boolean alarm = false;
+//        Date currentDateTime = Calendar.getInstance().getTime();
 
-        alarm=true;
-        currentDateTime=Calendar.getInstance().getTime();
-
-        String titleTXT = title.getText().toString();
-        String contentTXT = notesContent.getHtml();
-        String dateTXT = currentDateTime.toString();
-        String alarmTXT = alarm.toString();
+//        String titleTXT = title.getText().toString();
+//        String contentTXT = notesContent.getHtml();
+//        String dateTXT = currentDateTime.toString();
+//        String alarmTXT = alarm.toString();
 
 
-        DBHelper DH= new DBHelper(AddNotesActivity.this);
-
-        Boolean check_insert_data = DH.insert_user_data(titleTXT, contentTXT, dateTXT, alarmTXT);
-
-        if(check_insert_data)
-            Toast.makeText(AddNotesActivity.this, "New Entry Inserted", Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(AddNotesActivity.this, "New Entry Not Inserted", Toast.LENGTH_SHORT).show();
+//        DBHelper DH= new DBHelper(AddNotesActivity.this);
+//
+//        Boolean check_insert_data = DH.insert_user_data(titleTXT, contentTXT, dateTXT, alarmTXT);
+//
+//        if(check_insert_data)
+//            Toast.makeText(AddNotesActivity.this, "New Entry Inserted", Toast.LENGTH_SHORT).show();
+//        else
+//            Toast.makeText(AddNotesActivity.this, "New Entry Not Inserted", Toast.LENGTH_SHORT).show();
 
         flushNote();
         ((NotesbeeApplication)getApplication()).getDatabase().flush(getString(R.string.database_file));
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 }

@@ -12,14 +12,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notesbee.AddNotesActivity;
+import com.example.notesbee.Note;
+import com.example.notesbee.NotesbeeApplication;
 import com.example.notesbee.R;
+import com.example.notesbee.ui.NoteList;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NotesFragment extends Fragment {
     private RecyclerView notesRecyclerView;
+    private NotesAdapter notesAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -27,6 +35,33 @@ public class NotesFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_notes, container, false);
 
         notesRecyclerView = root.findViewById(R.id.notes_recycler_view);
+
+        List<String> titles= new ArrayList<>();
+        List<String> content= new ArrayList<>();
+        List<Boolean> alarmSet=new ArrayList<>();
+
+        NoteList db =new  NoteList(getContext(), getString(R.string.database_file));
+        for (int i = 0; i < db.getNoteCount(); i++) {
+            Note note = db.getNote(i);
+            titles.add(note.title);
+            content.add(note.memo);
+            alarmSet.add(note.alarm.getTimeSet());
+        }
+
+//        titles.add("First Note Title");
+//        titles.add("Secont notes Title");
+//        titles.add("Second notes Content");
+//        content.add("First Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt");
+//        content.add("Second Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt");
+//        content.add("Third Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt");
+//        alarmSet.add(true);
+//        alarmSet.add(false);
+//        alarmSet.add(true);
+
+        notesAdapter= new NotesAdapter(titles, content, alarmSet);
+        notesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        notesRecyclerView.setAdapter(notesAdapter);
+
 
         final FloatingActionButton addNotes = root.findViewById(R.id.add_notes_button);
         addNotes.setOnClickListener(new View.OnClickListener(){
@@ -36,7 +71,6 @@ public class NotesFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
 
         notesViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
