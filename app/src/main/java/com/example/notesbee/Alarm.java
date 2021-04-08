@@ -118,7 +118,7 @@ public class Alarm {
         buffer.putInt(hour);
         buffer.putInt(minute);
         buffer.putInt(timeSet ? 1 : 0);
-        return Base64.encodeToString(buffer.array(), 0);
+        return Base64.encodeToString(buffer.array(), Base64.NO_WRAP);
     }
 
     public String toString() {
