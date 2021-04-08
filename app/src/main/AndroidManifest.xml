@@ -17,7 +17,8 @@
             android:name=".NoteAlarmService"
             android:exported="false"></service>
 
-        <activity android:name=".AddNotesActivity" />
+        <activity android:name=".AddNotesActivity"/>
+        <activity android:name=".VoiceRecognition"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"

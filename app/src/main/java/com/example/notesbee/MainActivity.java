@@ -3,6 +3,7 @@ package com.example.notesbee;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.notesbee.ui.calendar.CalendarFragment;
 import com.example.notesbee.ui.notes.NotesFragment;
@@ -37,9 +38,6 @@ public class MainActivity extends AppCompatActivity{
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-
-
-
     }
 
 
