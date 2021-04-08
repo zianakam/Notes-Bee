@@ -47,6 +47,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
 
         // Load the database
-        ((NotesbeeApplication)getApplication()).setDatabase(new NoteList(getString(R.string.database_file)));
+        ((NotesbeeApplication)getApplication()).setDatabase(new NoteList(getApplicationContext(), getString(R.string.database_file)));
     }
 }

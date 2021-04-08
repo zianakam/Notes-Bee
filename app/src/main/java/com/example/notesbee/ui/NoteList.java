@@ -1,5 +1,7 @@
 package com.example.notesbee.ui;
 
+import android.content.Context;
+
 import com.example.notesbee.Note;
 
 import java.io.File;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 public class NoteList {
     // Array of notes
     private ArrayList<Note> notes;
+    private Context context;
 
     // Used for getNote, if this is specified a new note is returned
     public static final int NOTELIST_NEW_NOTE = -1;
@@ -20,7 +23,8 @@ public class NoteList {
     /**
      * Creates an empty note list
      */
-    public NoteList() {
+    public NoteList(Context context) {
+        this.context = context;
         notes = new ArrayList<Note>();
     }
 
@@ -28,13 +32,14 @@ public class NoteList {
      * Loads a note list from a file, returning an empty note list if the file doesn't exist
      * @param db File to load from, saved from flush()
      */
-    public NoteList(String db) {
+    public NoteList(Context context, String db) {
         notes = new ArrayList<Note>();
+        this.context = context;
         StringBuilder fileString = new StringBuilder();
 
         try {
             // Read file into string
-            FileInputStream input = new FileInputStream(db);
+            FileInputStream input = context.openFileInput(db);
             byte[] buffer = new byte[100];
             while (input.read(buffer) != -1) {
                 fileString.append(new String(buffer));
@@ -60,10 +65,11 @@ public class NoteList {
     public void flush(String db) {
         // Just dump each serialized note and a newline
         try {
-            FileOutputStream out = new FileOutputStream(db);
-            for (Note note : notes) {
-                out.write(note.toString().getBytes());
-                out.write("\n".getBytes());
+            FileOutputStream out = context.openFileOutput(db, Context.MODE_PRIVATE);
+            for (int i = 0; i < notes.size(); i++) {
+                out.write(notes.get(i).toString().getBytes());
+                if (i != notes.size() - 1)
+                    out.write("\n".getBytes());
             }
         } catch (Exception e) {
             // lmao
