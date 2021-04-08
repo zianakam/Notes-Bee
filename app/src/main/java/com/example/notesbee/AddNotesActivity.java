@@ -26,6 +26,7 @@ public class AddNotesActivity extends AppCompatActivity {
     //private SimpleDateFormat simpleDateFormat;
     private Note note; // Local note used to create alarms and build the save/load with
     public static WeakReference<AddNotesActivity> weakActivity;
+    private boolean recognitionStarted = false;
 
 
     @Override
@@ -154,13 +155,18 @@ public class AddNotesActivity extends AppCompatActivity {
      */
     public void startVoiceToText(View view) {
         Intent intent = new Intent(this, VoiceRecognition.class);
-        startActivity(intent);
+        if (recognitionStarted == false) {
+            recognitionStarted = true;
+            startActivity(intent);
+        } else {
+            recognitionStarted = false;
+            VoiceRecognition.getInstanceActivity().onDestroy();
+        }
     }
-
 
     public static AddNotesActivity getInstanceActivity() { return weakActivity.get(); }
 
-    public void setText(String text) {
+    public void setVoiceCaptionText(String text) {
                 TextView textView = (TextView)findViewById(R.id.caption_text);
                 textView.setText(text);
     }

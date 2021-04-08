@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -50,8 +51,8 @@ public class VoiceRecognition extends Activity implements
     public void onCreate(Bundle state) {
         super.onCreate(state);
 
+        activityReference = new WeakReference<>(this);
         requestUserPermission();
-        AddNotesActivity.getInstanceActivity().setText("Permission granted");
         setupTask(this);
 
     }
@@ -78,7 +79,6 @@ public class VoiceRecognition extends Activity implements
         File phoneticModel = new File(assetsDir, "en-phone.dmp");
         recognizer.addAllphoneSearch(PHONE_SEARCH, phoneticModel);
 
-        activityReference.get().switchSearch(KWS_SEARCH);
     }
 
     private void requestUserPermission() {
@@ -110,7 +110,6 @@ public class VoiceRecognition extends Activity implements
     public void setupTask(VoiceRecognition activity) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        this.activityReference = new WeakReference<>(activity);
 
         executor.execute(() -> {
             try {
@@ -121,7 +120,7 @@ public class VoiceRecognition extends Activity implements
                 e.printStackTrace();
             }
             handler.post(() -> {
-                activityReference.get().switchSearch(KWS_SEARCH);
+                activityReference.get().switchSearch(FORECAST_SEARCH);
             });
         });
     }
@@ -135,7 +134,7 @@ public class VoiceRecognition extends Activity implements
             recognizer.shutdown();
         }
 
-        AddNotesActivity.getInstanceActivity().setText("");
+        AddNotesActivity.getInstanceActivity().setVoiceCaptionText("");
     }
 
     private void switchSearch(String searchName) {
@@ -144,16 +143,27 @@ public class VoiceRecognition extends Activity implements
 
     @Override
     public void onResult(Hypothesis hypothesis) {
+        if (hypothesis == null)
+            return;
+
+        String text = hypothesis.getHypstr();
+        AddNotesActivity.getInstanceActivity().setVoiceCaptionText(text);
+
     }
 
     @Override
     public void onPartialResult(Hypothesis hypothesis) {
-        //TO DO:
+        if (hypothesis == null)
+            return;
+
+        String text = hypothesis.getHypstr();
+        AddNotesActivity.getInstanceActivity().setVoiceCaptionText(text);
+
     }
 
     @Override
     public void onBeginningOfSpeech() {
-        AddNotesActivity.getInstanceActivity().setText("Listening...");
+        AddNotesActivity.getInstanceActivity().setVoiceCaptionText("Listening...");
     }
 
     @Override
@@ -166,10 +176,10 @@ public class VoiceRecognition extends Activity implements
 
     @Override
     public void onError(Exception error) {
-        AddNotesActivity.getInstanceActivity().setText(error.getMessage());
+        AddNotesActivity.getInstanceActivity().setVoiceCaptionText(error.getMessage());
     }
 
-
+    public static VoiceRecognition getInstanceActivity() { return activityReference.get(); }
 
 
 }
