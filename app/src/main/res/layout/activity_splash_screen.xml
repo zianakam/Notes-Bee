@@ -8,12 +8,15 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="421dp"
-        android:layout_height="842dp"
+        android:layout_width="424dp"
+        android:layout_height="848dp"
+        android:layout_weight="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/google_pixel_3xl__1" />
+        app:layout_constraintVertical_bias="0.5"
+        app:srcCompat="@drawable/splash_screen" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

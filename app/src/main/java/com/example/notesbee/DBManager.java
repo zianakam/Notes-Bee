@@ -7,7 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 public class DBManager {
-    private Database dbHelper;
+    //private Database dbHelper;
     private Context context;
     private SQLiteDatabase database;
     /**

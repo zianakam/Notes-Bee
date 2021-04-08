@@ -169,9 +169,6 @@ public class VoiceRecognition extends Activity implements
         AddNotesActivity.getInstanceActivity().setText(error.getMessage());
     }
 
-    public static VoiceRecognition getInstanceActivity() {
-        return activityReference.get();
-    }
 
 
 

@@ -45,6 +45,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation project(':pocketsphinx-android-5prealpha-release')
+
+    //editor dependency
+    implementation 'jp.wasabeef:richeditor-android:2.0.0'
 }
 
 ant.importBuild 'assets.xml'
