@@ -1,5 +1,8 @@
 package com.example.notesbee;
 import android.app.AlarmManager;
+import android.util.Base64;
+
+import java.nio.ByteBuffer;
 
 public class Alarm {
     // Time this alarm is for
@@ -18,8 +21,18 @@ public class Alarm {
      * Initializes an alarm from a serialized string returned from Alarm.toString
      */
     public Alarm(String serial) {
-        year = month = date = hour = minute = 0;
-        timeSet = false;
+        if (serial.equals("")) {
+            year = month = date = hour = minute = 0;
+            timeSet = false;
+        } else {
+            ByteBuffer buf = ByteBuffer.wrap(Base64.decode(serial, 0));
+            year = buf.getInt();
+            month = buf.getInt();
+            date = buf.getInt();
+            hour = buf.getInt();
+            minute = buf.getInt();
+            timeSet = buf.getInt() != 0;
+        }
     }
 
     /**
@@ -98,7 +111,14 @@ public class Alarm {
 
 
     public String serialize() {
-        return ""; // TODO: This
+        ByteBuffer buffer = ByteBuffer.allocate(6 * 4); // 6 variables at 4 bytes a piece
+        buffer.putInt(year);
+        buffer.putInt(month);
+        buffer.putInt(date);
+        buffer.putInt(hour);
+        buffer.putInt(minute);
+        buffer.putInt(timeSet ? 1 : 0);
+        return Base64.encodeToString(buffer.array(), 0);
     }
 
     public String toString() {
