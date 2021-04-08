@@ -32,7 +32,9 @@ public class AddNotesActivity extends AppCompatActivity {
         title=findViewById(R.id.notesTitle);
         ImageButton savenotes= findViewById(R.id.save_note_btn);
         savenotes.setOnClickListener(view -> addDataToDatabase());
-        note = new Note();
+
+        // Pull note from the database
+        note = ((NotesbeeApplication)getApplication()).getDatabase().getNote(((NotesbeeApplication)getApplication()).getSelectedNoteIndex());
 
         // Save data to the database on clicking the save button
         findViewById(R.id.save_note_btn).setOnClickListener(view -> addDataToDatabase());
@@ -98,14 +100,20 @@ public class AddNotesActivity extends AppCompatActivity {
 //    }
 
     /**
+     * Flushes all currently stored text and such to the note
+     */
+    private void flushNote() {
+        note.title = title.getText().toString();
+        note.memo = notesContent.getHtml();
+    }
+
+    /**
      * The function that is called when the "Alarm" button is pressed.
      * It will launch a dialogue to select a time and schedule an alarm for that time.
      */
     public void setAlarm(View view) {
         // Must update note contents before setting alarm so the contents are visible to the future notification
-        note.title = title.getText().toString();
-        //note.memo = content.getText().toString();
-        note.memo = notesContent.getHtml();
+        flushNote();
         note.createAlarm(view.getContext());
     }
 
@@ -144,11 +152,7 @@ public class AddNotesActivity extends AppCompatActivity {
         else
             Toast.makeText(AddNotesActivity.this, "New Entry Not Inserted", Toast.LENGTH_SHORT).show();
 
-
-        // TODO: Serialize and add to database
-        // get time and date when the note is created
-
-        // save all four variables to the database
-
+        flushNote();
+        ((NotesbeeApplication)getApplication()).getDatabase().flush(getString(R.string.database_file));
     }
 }

@@ -9,4 +9,5 @@
     <string name="title_notes">Notes</string>
     <string name="title_calendar">Calendar</string>
     <string name="add_notes">Add notes</string>
+    <string name="database_file">database.txt</string>
 </resources>
