@@ -86,6 +86,7 @@ public class Note {
         // Create the intent
         Intent alarmIntent = new Intent(context, NoteAlarmService.class);
         alarmIntent.putExtra(NoteAlarmService.EXTRA_BODY, title);
+        alarmIntent.setAction(NoteAlarmService.ACTION_NOTIFY);
 
         // Create an alarm for that time
         alarmManager.set(AlarmManager.RTC, timeBetweenInMilliseconds > 0 ? timeBetweenInMilliseconds : 0, PendingIntent.getService(context, ALARM_BROADCAST, alarmIntent, 0));

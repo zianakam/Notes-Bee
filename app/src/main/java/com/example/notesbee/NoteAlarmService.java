@@ -36,7 +36,6 @@ public class NoteAlarmService extends IntentService {
      * parameters.
      */
     private void handleActionNotify(String body) {
-        // TODO: Handle notification
-        throw new UnsupportedOperationException("Not yet implemented");
+        // TODO: Set a notification
     }
 }
