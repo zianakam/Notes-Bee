@@ -71,7 +71,8 @@ public class Note {
     }
 
     /**
-     * Function called when the time is chosen from the alarm.
+     * Function called when the time is chosen from the alarm, sets up an intent and sets an alarm in
+     * the alarm manager.
      */
     public void onTimeChanged(TimePicker view, int hour, int minute) {
         // Debug and set alarm
@@ -82,18 +83,13 @@ public class Note {
         // Create a calendar with the chosen date/time on it and a base calendar with current time
         Calendar alarmDate = Calendar.getInstance();
         alarmDate.set(year, month, day, hour, minute);
-        Calendar currentDate = Calendar.getInstance(TimeZone.getDefault());
-
-        // Calculate the time between
-        long timeBetweenInMilliseconds = alarmDate.getTimeInMillis() - currentDate.getTimeInMillis();
 
         // Create the intent
         Intent alarmIntent = new Intent(context, NoteAlarmService.class);
         alarmIntent.putExtra(NoteAlarmService.EXTRA_BODY, title);
         alarmIntent.setAction(NoteAlarmService.ACTION_NOTIFY);
 
-        // Create an alarm for that time TODO: Fix alarms not working for future
-        //alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + (timeBetweenInMilliseconds > 0 ? timeBetweenInMilliseconds : 0), PendingIntent.getService(context, ALARM_BROADCAST, alarmIntent, 0));
+        // Create an alarm for that time
         alarmManager.set(AlarmManager.RTC_WAKEUP, alarmDate.getTimeInMillis(), PendingIntent.getService(context, ALARM_BROADCAST, alarmIntent, 0));
         Toast.makeText(context, alarmString, Toast.LENGTH_SHORT).show();
     }
@@ -110,6 +106,10 @@ public class Note {
         timePickerDialog.show();
     }
 
+    /**
+     * Begins the dialog chain of setting up an alarm
+     * @param context Context to make the dialogs in
+     */
     public void onCreateAlarm(Context context) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context, this::onDateSet, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -121,7 +121,7 @@ public class Note {
     }
 
     /**
-     * Creates a dialogue for setting an alarm, starting with a calendar then a clock dialog
+     * Prompts the user to create an alarm, asking them if they want to overwrite an existing one first
      * @param context Context to make the calendar and clock dialog in
      */
     public void createAlarm(Context context) {
