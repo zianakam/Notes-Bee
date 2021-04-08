@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.speech.tts.Voice;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -18,7 +19,9 @@ public class AddNotesActivity extends AppCompatActivity {
     private String dateTime;
     private Calendar calendar;
     private SimpleDateFormat simpleDateFormat;
-    public static WeakReference<AddNotesActivity> weakActivity;
+    private boolean startedVoiceRecognition = false;
+    private static WeakReference<AddNotesActivity> weakActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +65,11 @@ public class AddNotesActivity extends AppCompatActivity {
         dateTime = simpleDateFormat.format(calendar.getTime()).toString();
 
         // save all three variables to the database
-
-
     }
 
     public void startVoiceRecognition (View view) {
         Intent intent = new Intent(this, VoiceRecognition.class);
+        startedVoiceRecognition = true;
         startActivity(intent);
     }
 
@@ -79,4 +81,6 @@ public class AddNotesActivity extends AppCompatActivity {
         TextView textView = (TextView)findViewById(R.id.caption_text);
         textView.setText(text);
     }
+
+
 }

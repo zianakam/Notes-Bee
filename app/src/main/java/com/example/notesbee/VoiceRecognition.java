@@ -2,20 +2,12 @@ package com.example.notesbee;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -30,35 +22,46 @@ import edu.cmu.pocketsphinx.Assets;
 import edu.cmu.pocketsphinx.Hypothesis;
 import edu.cmu.pocketsphinx.RecognitionListener;
 import edu.cmu.pocketsphinx.SpeechRecognizer;
+import edu.cmu.pocketsphinx.SpeechRecognizerSetup;
 
 import static android.widget.Toast.makeText;
-import static androidx.activity.result.ActivityResultCallerKt.registerForActivityResult;
 import static edu.cmu.pocketsphinx.SpeechRecognizerSetup.defaultSetup;
+
 
 public class VoiceRecognition extends Activity implements
         RecognitionListener {
 
-    private static final String KWS_SEARCH = "";
-    private static final String FORECAST_SEARCH = "";
-    private static final String DIGITS_SEARCH = "";
-    private static final String PHONE_SEARCH = "";
-    private static final String MENU_SEARCH = "";
+    private static final String KWS_SEARCH = "wakeup";
+    private static final String FORECAST_SEARCH = "forecast";
+    private static final String DIGITS_SEARCH = "digits";
+    private static final String PHONE_SEARCH = "phone";
+    private static final String MENU_SEARCH = "menu";
 
     //Activates menu
-    private static final String KEYPHRASE = "";
+    private static final String KEYPHRASE = "oh mighty computer";
 
     private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
 
     private SpeechRecognizer recognizer;
     private HashMap<String, Integer> captions;
-    private WeakReference<VoiceRecognition> activityReference;
+    private static WeakReference<VoiceRecognition> activityReference;
+
+    @Override
+    public void onCreate(Bundle state) {
+        super.onCreate(state);
+
+        requestUserPermission();
+        AddNotesActivity.getInstanceActivity().setText("Permission granted");
+        setupTask(this);
+
+    }
 
     private void setupRecognizer(File assetsDir) throws IOException {
 
         recognizer = defaultSetup()
-                .setAcousticModel(new File(assetsDir, "en-us-ptm"))
-                .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
-                .getRecognizer();
+                    .setAcousticModel(new File(assetsDir, "en-us-ptm"))
+                    .setDictionary(new File(assetsDir, "cmudict-en-us.dict"))
+                    .getRecognizer();
         recognizer.addListener(this);
 
         recognizer.addKeyphraseSearch(KWS_SEARCH, KEYPHRASE);
@@ -74,17 +77,8 @@ public class VoiceRecognition extends Activity implements
 
         File phoneticModel = new File(assetsDir, "en-phone.dmp");
         recognizer.addAllphoneSearch(PHONE_SEARCH, phoneticModel);
-    }
 
-    @Override
-    public void onCreate(Bundle state) {
-        super.onCreate(state);
-
-        String text = "Updated";
-        AddNotesActivity.getInstanceActivity().setText(text);
-
-        requestUserPermission();
-        //setupTask(this);
+        recognizer.startListening(KWS_SEARCH);
     }
 
     private void requestUserPermission() {
@@ -113,7 +107,6 @@ public class VoiceRecognition extends Activity implements
         }
     }
 
-
     public void setupTask(VoiceRecognition activity) {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
@@ -128,7 +121,7 @@ public class VoiceRecognition extends Activity implements
                 e.printStackTrace();
             }
             handler.post(() -> {
-                activityReference.get().switchSearch(KWS_SEARCH);
+                //activityReference.get().switchSearch(KWS_SEARCH);
             });
         });
     }
@@ -136,21 +129,21 @@ public class VoiceRecognition extends Activity implements
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //TO DO:
+
+        if (recognizer != null) {
+            recognizer.cancel();
+            recognizer.shutdown();
+        }
+
+        AddNotesActivity.getInstanceActivity().setText("");
     }
 
     private void switchSearch(String searchName) {
-        recognizer.stop();
-
-        //if (searchName.equals(KWS_SEARCH))
-        //recognizer.startListening(searchName, 10000);
-        //String caption = getResources().getString(captions.get(searchName));
-        //((TextView) findViewById(R.id.caption_text)).setText(caption);
+        recognizer.startListening(searchName);
     }
 
     @Override
     public void onResult(Hypothesis hypothesis) {
-        //TO DO:
     }
 
     @Override
@@ -160,22 +153,26 @@ public class VoiceRecognition extends Activity implements
 
     @Override
     public void onBeginningOfSpeech() {
-        //TO DO:
+        AddNotesActivity.getInstanceActivity().setText("Listening...");
     }
 
     @Override
     public void onEndOfSpeech() {
-        //TO DO:
     }
 
     @Override
     public void onTimeout() {
-        //TO DO:
     }
 
     @Override
     public void onError(Exception error) {
-        //TO DO:
+        AddNotesActivity.getInstanceActivity().setText(error.getMessage());
     }
+
+    public static VoiceRecognition getInstanceActivity() {
+        return activityReference.get();
+    }
+
+
 
 }
