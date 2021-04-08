@@ -9,6 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.example.notesbee.ui.NoteList;
+
 public class SplashScreenActivity extends AppCompatActivity {
 
     public static final String NOTIFICATION_CHANNEL = "com.example.notesbee";
@@ -43,5 +45,8 @@ public class SplashScreenActivity extends AppCompatActivity {
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+
+        // Load the database
+        ((NotesbeeApplication)getApplication()).setDatabase(new NoteList(getApplicationContext(), getString(R.string.database_file)));
     }
 }
