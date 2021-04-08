@@ -78,7 +78,7 @@ public class VoiceRecognition extends Activity implements
         File phoneticModel = new File(assetsDir, "en-phone.dmp");
         recognizer.addAllphoneSearch(PHONE_SEARCH, phoneticModel);
 
-        recognizer.startListening(KWS_SEARCH);
+        activityReference.get().switchSearch(KWS_SEARCH);
     }
 
     private void requestUserPermission() {
@@ -121,7 +121,7 @@ public class VoiceRecognition extends Activity implements
                 e.printStackTrace();
             }
             handler.post(() -> {
-                //activityReference.get().switchSearch(KWS_SEARCH);
+                activityReference.get().switchSearch(KWS_SEARCH);
             });
         });
     }
