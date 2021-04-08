@@ -92,8 +92,9 @@ public class Note {
         alarmIntent.putExtra(NoteAlarmService.EXTRA_BODY, title);
         alarmIntent.setAction(NoteAlarmService.ACTION_NOTIFY);
 
-        // Create an alarm for that time TODO: Fix this proccing immediately
-        alarmManager.set(AlarmManager.RTC, timeBetweenInMilliseconds > 0 ? timeBetweenInMilliseconds : 0, PendingIntent.getService(context, ALARM_BROADCAST, alarmIntent, 0));
+        // Create an alarm for that time TODO: Fix alarms not working for future
+        //alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + (timeBetweenInMilliseconds > 0 ? timeBetweenInMilliseconds : 0), PendingIntent.getService(context, ALARM_BROADCAST, alarmIntent, 0));
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmDate.getTimeInMillis(), PendingIntent.getService(context, ALARM_BROADCAST, alarmIntent, 0));
         Toast.makeText(context, alarmString, Toast.LENGTH_SHORT).show();
     }
 
