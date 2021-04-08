@@ -14,6 +14,9 @@ public class NoteList {
     // Array of notes
     private ArrayList<Note> notes;
 
+    // Used for getNote, if this is specified a new note is returned
+    public static final int NOTELIST_NEW_NOTE = -1;
+
     /**
      * Creates an empty note list
      */
@@ -70,12 +73,30 @@ public class NoteList {
     }
 
     /**
+     * Since notes are guaranteed to preserve order when saving/loading you can use this to swap two notes in the array
+     * @param index First note to swap in the range [0, getNoteCount)
+     * @param otherIndex Second note to swap with in the range [0, getNoteCount)
+     * @throws IndexOutOfBoundsException if either index is out of bounds
+     */
+    public void swapNotes(int index, int otherIndex) throws IndexOutOfBoundsException {
+        Note hold = notes.get(index);
+        notes.set(index, notes.get(otherIndex));
+        notes.set(otherIndex, hold);
+    }
+
+    /**
      * Gets a note at a given index
-     * @param index Index of the note to get in the range [0, getNoteCount)
+     * @param index Index of the note to get in the range [0, getNoteCount) U NOTELIST_NEW_NOTE
      * @throws ArrayIndexOutOfBoundsException
      */
     public Note getNote(int index) throws ArrayIndexOutOfBoundsException {
-        return notes.get(index);
+        if (index == NOTELIST_NEW_NOTE) {
+            Note out = new Note();
+            notes.add(out);
+            return out;
+        } else {
+            return notes.get(index);
+        }
     }
 
     /**
