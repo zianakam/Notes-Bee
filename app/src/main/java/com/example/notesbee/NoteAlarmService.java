@@ -4,6 +4,9 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread. Will display a notification for a note
@@ -36,6 +39,14 @@ public class NoteAlarmService extends IntentService {
      * parameters.
      */
     private void handleActionNotify(String body) {
-        // TODO: Set a notification
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, SplashScreenActivity.NOTIFICATION_CHANNEL)
+                .setSmallIcon(R.drawable.logo1)
+                .setContentTitle("Notesbee")
+                .setContentText(body)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(0, builder.build());
     }
 }

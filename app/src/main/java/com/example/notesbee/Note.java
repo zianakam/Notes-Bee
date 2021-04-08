@@ -12,6 +12,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.time.Duration;
 import java.time.temporal.Temporal;
@@ -72,7 +73,8 @@ public class Note {
      */
     public void onTimeChanged(TimePicker view, int hour, int minute) {
         // Debug and set alarm
-        System.out.println("Alarm set for " + year + "-" + month + "-" + day + " @ " + hour + ":" + minute);
+        String alarmString = "Alarm set for " + year + "-" + month + "-" + day + " @ " + hour + ":" + minute;
+        System.out.println(alarmString);
         alarm.set(year, month, day, hour, minute);
 
         // Create a calendar with the chosen date/time on it and a base calendar with current time
@@ -90,6 +92,7 @@ public class Note {
 
         // Create an alarm for that time
         alarmManager.set(AlarmManager.RTC, timeBetweenInMilliseconds > 0 ? timeBetweenInMilliseconds : 0, PendingIntent.getService(context, ALARM_BROADCAST, alarmIntent, 0));
+        Toast.makeText(context, alarmString, Toast.LENGTH_SHORT).show();
     }
 
     /**
