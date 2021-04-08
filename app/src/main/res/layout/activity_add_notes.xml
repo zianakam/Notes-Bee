@@ -112,7 +112,6 @@
             android:background="@color/brown4">
 
             <ImageButton
-                android:elevation="10dp"
                 android:id="@+id/action_undo"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -215,8 +214,6 @@
                 android:background="@null"
                 android:contentDescription="@null"
                 android:src="@drawable/txt_color" />
-
-
 
         </LinearLayout>
     </HorizontalScrollView>
