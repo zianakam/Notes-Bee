@@ -13,6 +13,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import jp.wasabeef.richeditor.RichEditor;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
     List<String> titles, content;
@@ -34,7 +35,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.noteTitle.setText(titles.get(position));
-        holder.noteContent.setText(content.get(position));
+        holder.noteContent.setHtml(content.get(position));
         if(alarmSet.get(position))
             holder.alarmSetIcon.setBackgroundResource(R.drawable.bell_icon);
 
@@ -52,7 +53,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView noteTitle, noteContent;
+        TextView noteTitle;
+        RichEditor noteContent;
         ImageButton alarmSetIcon;
         View view;
         public ViewHolder(@NonNull View itemView) {
