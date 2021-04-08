@@ -1,10 +1,12 @@
 package com.example.notesbee;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -90,7 +92,7 @@ public class Note {
         alarmIntent.putExtra(NoteAlarmService.EXTRA_BODY, title);
         alarmIntent.setAction(NoteAlarmService.ACTION_NOTIFY);
 
-        // Create an alarm for that time
+        // Create an alarm for that time TODO: Fix this proccing immediately
         alarmManager.set(AlarmManager.RTC, timeBetweenInMilliseconds > 0 ? timeBetweenInMilliseconds : 0, PendingIntent.getService(context, ALARM_BROADCAST, alarmIntent, 0));
         Toast.makeText(context, alarmString, Toast.LENGTH_SHORT).show();
     }
@@ -107,11 +109,7 @@ public class Note {
         timePickerDialog.show();
     }
 
-    /**
-     * Creates a dialogue for setting an alarm, starting with a calendar then a clock dialog
-     * @param context Context to make the calendar and clock dialog in
-     */
-    public void createAlarm(Context context) {
+    public void onCreateAlarm(Context context) {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(context, this::onDateSet, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.show();
@@ -119,6 +117,29 @@ public class Note {
 
         // Get the alarm manager while we have the context
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    }
+
+    /**
+     * Creates a dialogue for setting an alarm, starting with a calendar then a clock dialog
+     * @param context Context to make the calendar and clock dialog in
+     */
+    public void createAlarm(Context context) {
+        if (!alarm.getTimeSet()) {
+            onCreateAlarm(context);
+        } else {
+            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (DialogInterface.BUTTON_POSITIVE == which) {
+                        onCreateAlarm(context);
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("Do you want to overwrite the previously set alarm?").setPositiveButton("Yes", dialogClickListener)
+                   .setNegativeButton("No", dialogClickListener).show();
+        }
     }
 
     /**
