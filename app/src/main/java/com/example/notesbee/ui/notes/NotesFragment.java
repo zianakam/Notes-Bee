@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.example.notesbee.AddNotesActivity;
 import com.example.notesbee.Note;
@@ -39,14 +41,17 @@ public class NotesFragment extends Fragment {
         List<String> titles= new ArrayList<>();
         List<String> content= new ArrayList<>();
         List<Boolean> alarmSet=new ArrayList<>();
+        List<Integer> index=new ArrayList<>();
 
         NoteList db =new  NoteList(getContext(), getString(R.string.database_file));
         for (int i = 0; i < db.getNoteCount(); i++) {
             Note note = db.getNote(i);
+            index.add(i);
             titles.add(note.title);
             content.add(note.memo);
             alarmSet.add(note.alarm.getTimeSet());
         }
+
 
 //        titles.add("First Note Title");
 //        titles.add("Secont notes Title");
@@ -58,8 +63,8 @@ public class NotesFragment extends Fragment {
 //        alarmSet.add(false);
 //        alarmSet.add(true);
 
-        notesAdapter= new NotesAdapter(titles, content, alarmSet);
-        notesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        notesAdapter= new NotesAdapter(titles, content, alarmSet, index);
+        notesRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         notesRecyclerView.setAdapter(notesAdapter);
 
 

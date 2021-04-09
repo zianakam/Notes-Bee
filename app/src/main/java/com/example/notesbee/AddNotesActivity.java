@@ -119,6 +119,7 @@ public class AddNotesActivity extends AppCompatActivity {
         note.createAlarm(view.getContext());
     }
 
+
     /**
      * Adds the message currently written to the database, called whenever something would
      * cause this message screen to close.

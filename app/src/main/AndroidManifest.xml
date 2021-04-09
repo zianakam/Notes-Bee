@@ -19,6 +19,7 @@
 
         <activity android:name=".AddNotesActivity"/>
         <activity android:name=".VoiceRecognition"/>
+        <activity android:name=".ui.notes.UpdateNotesActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"

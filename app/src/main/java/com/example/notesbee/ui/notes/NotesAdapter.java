@@ -1,5 +1,6 @@
 package com.example.notesbee.ui.notes;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,7 +8,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.notesbee.MainActivity;
+import com.example.notesbee.Note;
 import com.example.notesbee.R;
+import com.example.notesbee.ui.NoteList;
 
 import java.util.List;
 
@@ -18,11 +22,13 @@ import jp.wasabeef.richeditor.RichEditor;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
     List<String> titles, content;
     List<Boolean> alarmSet;
+    List<Integer> index;
 
-    public NotesAdapter(List<String> title, List<String> content, List<Boolean> alarmSet){
+    public NotesAdapter(List<String> title, List<String> content, List<Boolean> alarmSet, List<Integer> index){
         this.titles=title;
         this.content=content;
         this.alarmSet=alarmSet;
+        this.index=index;
     }
 
     @NonNull
@@ -39,9 +45,25 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         if(alarmSet.get(position))
             holder.alarmSetIcon.setBackgroundResource(R.drawable.bell_icon);
 
+        holder.deleteNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // code for deleting data for the passed index
+                Integer i= index.get(position);    //to get the passed index
+
+                Intent intent=new Intent(view.getContext(), MainActivity.class);
+                view.getContext().startActivity(intent);
+                Toast.makeText(view.getContext(), "Note deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent=new Intent(view.getContext(), UpdateNotesActivity.class);
+                intent.putExtra("title",titles.get(position));
+                intent.putExtra("content", content.get(position));
+                intent.putExtra("alarmSet", alarmSet.get(position));
+                view.getContext().startActivity(intent);
                 Toast.makeText(view.getContext(), "The cardview is clicked", Toast.LENGTH_SHORT).show();
             }
         });
@@ -56,12 +78,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         TextView noteTitle;
         RichEditor noteContent;
         ImageButton alarmSetIcon;
+        ImageButton deleteNote;
         View view;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             noteTitle= itemView.findViewById(R.id.carview_title);
             noteContent=itemView.findViewById(R.id.cardview_content);
             alarmSetIcon=itemView.findViewById(R.id.cardview_alarm_btn);
+            deleteNote=itemView.findViewById(R.id.cardview_delete_btn);
             view= itemView;
         }
     }
