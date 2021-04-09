@@ -5,11 +5,11 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.notesbee.AddNotesActivity;
 import com.example.notesbee.MainActivity;
 import com.example.notesbee.Note;
 import com.example.notesbee.NotesbeeApplication;
@@ -44,7 +44,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.noteTitle.setText(titles.get(position));
-        holder.noteContent.setHtml(content.get(position));
+        holder.noteContent.loadData(content.get(position),"text/html; charset=utf-8","utf-8");
         if(alarmSet.get(position))
             holder.alarmSetIcon.setBackgroundResource(R.drawable.bell_icon);
 
@@ -53,8 +53,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             public void onClick(View view) {
                 // code for deleting data for the passed index
                 Integer i= index.get(position);    //to get the passed index
-
-
+                ((NotesbeeApplication)((Activity)view.getContext()).getApplication()).getDatabase().remove(i);
                 Intent intent=new Intent(view.getContext(), MainActivity.class);
                 view.getContext().startActivity(intent);
                 Toast.makeText(view.getContext(), "Note deleted", Toast.LENGTH_SHORT).show();
@@ -63,9 +62,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(view.getContext(), AddNotesActivity.class);
-                ((NotesbeeApplication)((Activity)view.getContext()).getApplication()).setSelectedNoteIndex(position);
+                Intent intent=new Intent(view.getContext(), UpdateNotesActivity.class);
+                intent.putExtra("title",titles.get(position));
+                intent.putExtra("content", content.get(position));
+                intent.putExtra("alarmSet", alarmSet.get(position));
+                intent.putExtra("index", index.get(position));
                 view.getContext().startActivity(intent);
+                Toast.makeText(view.getContext(), "The cardview is clicked", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -77,7 +80,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView noteTitle;
-        RichEditor noteContent;
+        WebView noteContent;
         ImageButton alarmSetIcon;
         ImageButton deleteNote;
         View view;

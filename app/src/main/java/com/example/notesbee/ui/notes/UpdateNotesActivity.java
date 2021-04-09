@@ -25,12 +25,20 @@ public class UpdateNotesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_notes);
 
+        title=findViewById(R.id.notesTitle);
+        notesContent= findViewById(R.id.notesContent);
+
+        Intent data= getIntent();
+        title.setText(data.getStringExtra("title"));
+        notesContent.setHtml(data.getStringExtra("content"));
+        Boolean alarmSet=data.getBooleanExtra("alarmSet",false);
+        Integer index=data.getIntExtra("index",0);
 
         // Pull note from the database
         note = ((NotesbeeApplication)getApplication()).getDatabase().getNote(((NotesbeeApplication)getApplication()).getSelectedNoteIndex());
 
         // Save data to the database on clicking the save button
-        findViewById(R.id.save_note_btn).setOnClickListener(view -> updateDataToDatabase());
+        findViewById(R.id.save_note_btn).setOnClickListener(view -> updateDataToDatabase(index));
 
         // Set a reminder for the note
         findViewById(R.id.reminder_btn).setOnClickListener(this::setAlarm);
@@ -42,12 +50,10 @@ public class UpdateNotesActivity extends AppCompatActivity {
         //findViewById(R.id.vtt_btn).setOnLongClickListener(view -> startVoiceToText(view));
 
 
-        title=findViewById(R.id.notesTitle);
-        notesContent= findViewById(R.id.notesContent);
 
-        Intent data= getIntent();
-        title.setText(data.getStringExtra("title"));
-        notesContent.setHtml(data.getStringExtra("content"));
+
+
+
 
 
         findViewById(R.id.action_undo).setOnClickListener(view -> notesContent.undo());
@@ -100,9 +106,10 @@ public class UpdateNotesActivity extends AppCompatActivity {
      * Adds the message currently written to the database, called whenever something would
      * cause this message screen to close.
      */
-    private void updateDataToDatabase(){
+    private void updateDataToDatabase(Integer index){
         flushNote();
-        ((NotesbeeApplication)getApplication()).getDatabase().flush(getString(R.string.database_file));
+        //((NotesbeeApplication)getApplication()).getDatabase().flush(getString(R.string.database_file));
+        ((NotesbeeApplication)getApplication()).setSelectedNoteIndex(index);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
