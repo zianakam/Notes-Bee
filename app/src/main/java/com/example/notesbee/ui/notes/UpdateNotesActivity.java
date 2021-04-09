@@ -1,5 +1,6 @@
 package com.example.notesbee.ui.notes;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -108,8 +109,9 @@ public class UpdateNotesActivity extends AppCompatActivity {
      */
     private void updateDataToDatabase(Integer index){
         flushNote();
-        //((NotesbeeApplication)getApplication()).getDatabase().flush(getString(R.string.database_file));
-        ((NotesbeeApplication)getApplication()).setSelectedNoteIndex(index);
+        ((NotesbeeApplication)getApplication()).getDatabase().remove(index);
+        ((NotesbeeApplication)getApplication()).getDatabase().flush(getString(R.string.database_file));
+        //((NotesbeeApplication)getApplication()).setSelectedNoteIndex(index);
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }

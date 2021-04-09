@@ -44,14 +44,15 @@ public class NotesFragment extends Fragment {
         List<String> content= new ArrayList<>();
         List<Boolean> alarmSet=new ArrayList<>();
         List<Integer> index=new ArrayList<>();
-
         NoteList db = ((NotesbeeApplication)((Activity)getContext()).getApplication()).getDatabase();
         for (int i = 0; i < db.getNoteCount(); i++) {
             Note note = db.getNote(i);
-            index.add(i);
-            titles.add(note.title);
-            content.add(note.memo);
-            alarmSet.add(note.alarm.getTimeSet());
+            if(!note.title.isEmpty()) {
+                index.add(i);
+                titles.add(note.title);
+                content.add(note.memo);
+                alarmSet.add(note.alarm.getTimeSet());
+            }
         }
 
 //        titles.add("First Note Title");

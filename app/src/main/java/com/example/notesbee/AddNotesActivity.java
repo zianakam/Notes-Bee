@@ -83,21 +83,6 @@ public class AddNotesActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        addDataToDatabase();
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        addDataToDatabase();
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        addDataToDatabase();
-    }
 
     /**
      * Flushes all currently stored text and such to the note
