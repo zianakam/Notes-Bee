@@ -58,20 +58,20 @@
         tools:ignore="VectorDrawableCompat" />
 
 
-<!--    <EditText-->
-<!--        android:id="@+id/notesContent"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:background="@null"-->
-<!--        android:ems="10"-->
-<!--        android:gravity="start|top"-->
-<!--        android:inputType="textMultiLine"-->
-<!--        android:padding="10dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/divider" />-->
+    <!--    <EditText-->
+    <!--        android:id="@+id/notesContent"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:background="@null"-->
+    <!--        android:ems="10"-->
+    <!--        android:gravity="start|top"-->
+    <!--        android:inputType="textMultiLine"-->
+    <!--        android:padding="10dp"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/divider" />-->
 
 
     <View
@@ -184,29 +184,29 @@
                 android:contentDescription="@null"
                 android:src="@drawable/checkbox" />
 
-<!--            <ImageButton-->
-<!--                android:id="@+id/action_heading1"-->
-<!--                android:layout_width="48dp"-->
-<!--                android:layout_height="48dp"-->
-<!--                android:background="@null"-->
-<!--                android:contentDescription="@null"-->
-<!--                android:src="@drawable/h1" />-->
+            <!--            <ImageButton-->
+            <!--                android:id="@+id/action_heading1"-->
+            <!--                android:layout_width="48dp"-->
+            <!--                android:layout_height="48dp"-->
+            <!--                android:background="@null"-->
+            <!--                android:contentDescription="@null"-->
+            <!--                android:src="@drawable/h1" />-->
 
-<!--            <ImageButton-->
-<!--                android:id="@+id/action_heading2"-->
-<!--                android:layout_width="48dp"-->
-<!--                android:layout_height="48dp"-->
-<!--                android:background="@null"-->
-<!--                android:contentDescription="@null"-->
-<!--                android:src="@drawable/h2" />-->
+            <!--            <ImageButton-->
+            <!--                android:id="@+id/action_heading2"-->
+            <!--                android:layout_width="48dp"-->
+            <!--                android:layout_height="48dp"-->
+            <!--                android:background="@null"-->
+            <!--                android:contentDescription="@null"-->
+            <!--                android:src="@drawable/h2" />-->
 
-<!--            <ImageButton-->
-<!--                android:id="@+id/action_heading3"-->
-<!--                android:layout_width="48dp"-->
-<!--                android:layout_height="48dp"-->
-<!--                android:background="@null"-->
-<!--                android:contentDescription="@null"-->
-<!--                android:src="@drawable/h3" />-->
+            <!--            <ImageButton-->
+            <!--                android:id="@+id/action_heading3"-->
+            <!--                android:layout_width="48dp"-->
+            <!--                android:layout_height="48dp"-->
+            <!--                android:background="@null"-->
+            <!--                android:contentDescription="@null"-->
+            <!--                android:src="@drawable/h3" />-->
 
             <ImageButton
                 android:id="@+id/action_txt_color"
@@ -234,6 +234,20 @@
 
 
     <!--    android:background="@drawable/round_shape_btn"-->
+
+    <TextView
+            android:id="@+id/caption_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="332dp"
+            android:text=""
+            android:textSize="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -91,6 +91,14 @@ public class NoteList {
     }
 
     /**
+     * Removes a note
+     * @param index Index of the note to remove
+     */
+    public void remove(int index) throws ArrayIndexOutOfBoundsException {
+        notes.remove(index);
+    }
+
+    /**
      * Gets a note at a given index
      * @param index Index of the note to get in the range [0, getNoteCount) U NOTELIST_NEW_NOTE
      * @throws ArrayIndexOutOfBoundsException

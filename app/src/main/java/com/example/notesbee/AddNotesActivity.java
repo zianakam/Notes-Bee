@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.ref.WeakReference;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -21,7 +23,8 @@ public class AddNotesActivity extends AppCompatActivity {
     //private Calendar calendar;
     //private SimpleDateFormat simpleDateFormat;
     private Note note; // Local note used to create alarms and build the save/load with
-
+    public static WeakReference<AddNotesActivity> weakActivity;
+    private boolean recognitionStarted = false;
 
 
     @Override
@@ -31,7 +34,7 @@ public class AddNotesActivity extends AppCompatActivity {
         title=findViewById(R.id.notesTitle);
         ImageButton savenotes= findViewById(R.id.save_note_btn);
         savenotes.setOnClickListener(view -> addDataToDatabase());
-
+        weakActivity = new WeakReference<>(this);
         // Pull note from the database
         note = ((NotesbeeApplication)getApplication()).getDatabase().getNote(((NotesbeeApplication)getApplication()).getSelectedNoteIndex());
 
@@ -117,13 +120,6 @@ public class AddNotesActivity extends AppCompatActivity {
     }
 
     /**
-     * Begins voice recognition, this is called when the microphone icon is pressed.
-     */
-    public void startVoiceToText(View view) {
-
-    }
-
-    /**
      * Adds the message currently written to the database, called whenever something would
      * cause this message screen to close.
      */
@@ -155,4 +151,26 @@ public class AddNotesActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
+
+    /**
+     * Begins voice recognition, this is called when the microphone icon is pressed.
+     */
+    public void startVoiceToText(View view) {
+        Intent intent = new Intent(this, VoiceRecognition.class);
+        if (recognitionStarted == false) {
+            recognitionStarted = true;
+            startActivity(intent);
+        } else {
+            recognitionStarted = false;
+            VoiceRecognition.getInstanceActivity().onDestroy();
+        }
+    }
+
+    public static AddNotesActivity getInstanceActivity() { return weakActivity.get(); }
+
+    public void setVoiceCaptionText(String text) {
+                TextView textView = (TextView)findViewById(R.id.caption_text);
+                textView.setText(text);
+    }
+
 }
