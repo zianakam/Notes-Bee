@@ -83,23 +83,21 @@ public class AddNotesActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        addDataToDatabase();
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        addDataToDatabase();
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        addDataToDatabase();
-//    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        addDataToDatabase();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        addDataToDatabase();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        addDataToDatabase();
+    }
 
     /**
      * Flushes all currently stored text and such to the note
@@ -118,7 +116,6 @@ public class AddNotesActivity extends AppCompatActivity {
         flushNote();
         note.createAlarm(view.getContext());
     }
-
 
     /**
      * Adds the message currently written to the database, called whenever something would

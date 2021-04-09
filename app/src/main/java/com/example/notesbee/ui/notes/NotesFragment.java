@@ -1,5 +1,6 @@
 package com.example.notesbee.ui.notes;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
@@ -44,7 +45,7 @@ public class NotesFragment extends Fragment {
         List<Boolean> alarmSet=new ArrayList<>();
         List<Integer> index=new ArrayList<>();
 
-        NoteList db =new  NoteList(getContext(), getString(R.string.database_file));
+        NoteList db = ((NotesbeeApplication)((Activity)getContext()).getApplication()).getDatabase();
         for (int i = 0; i < db.getNoteCount(); i++) {
             Note note = db.getNote(i);
             index.add(i);
@@ -52,9 +53,6 @@ public class NotesFragment extends Fragment {
             content.add(note.memo);
             alarmSet.add(note.alarm.getTimeSet());
         }
-
-        db.remove(1);
-        Toast.makeText(getContext(), "Note deleted", Toast.LENGTH_SHORT).show();
 
 //        titles.add("First Note Title");
 //        titles.add("Secont notes Title");

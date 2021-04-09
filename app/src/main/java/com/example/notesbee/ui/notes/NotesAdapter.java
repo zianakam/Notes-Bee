@@ -1,5 +1,6 @@
 package com.example.notesbee.ui.notes;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.notesbee.AddNotesActivity;
 import com.example.notesbee.MainActivity;
 import com.example.notesbee.Note;
 import com.example.notesbee.NotesbeeApplication;
@@ -61,12 +63,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(view.getContext(), UpdateNotesActivity.class);
-                intent.putExtra("title",titles.get(position));
-                intent.putExtra("content", content.get(position));
-                intent.putExtra("alarmSet", alarmSet.get(position));
+                Intent intent=new Intent(view.getContext(), AddNotesActivity.class);
+                ((NotesbeeApplication)((Activity)view.getContext()).getApplication()).setSelectedNoteIndex(position);
                 view.getContext().startActivity(intent);
-                Toast.makeText(view.getContext(), "The cardview is clicked", Toast.LENGTH_SHORT).show();
             }
         });
     }
