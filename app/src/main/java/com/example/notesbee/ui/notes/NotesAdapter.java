@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.notesbee.MainActivity;
 import com.example.notesbee.Note;
+import com.example.notesbee.NotesbeeApplication;
 import com.example.notesbee.R;
 import com.example.notesbee.ui.NoteList;
 
@@ -50,6 +51,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
             public void onClick(View view) {
                 // code for deleting data for the passed index
                 Integer i= index.get(position);    //to get the passed index
+
 
                 Intent intent=new Intent(view.getContext(), MainActivity.class);
                 view.getContext().startActivity(intent);

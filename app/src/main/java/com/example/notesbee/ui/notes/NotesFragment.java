@@ -1,5 +1,6 @@
 package com.example.notesbee.ui.notes;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -52,6 +53,8 @@ public class NotesFragment extends Fragment {
             alarmSet.add(note.alarm.getTimeSet());
         }
 
+        db.remove(1);
+        Toast.makeText(getContext(), "Note deleted", Toast.LENGTH_SHORT).show();
 
 //        titles.add("First Note Title");
 //        titles.add("Secont notes Title");
@@ -63,7 +66,7 @@ public class NotesFragment extends Fragment {
 //        alarmSet.add(false);
 //        alarmSet.add(true);
 
-        notesAdapter= new NotesAdapter(titles, content, alarmSet, index);
+        notesAdapter= new NotesAdapter(titles, content, alarmSet, index );
         notesRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         notesRecyclerView.setAdapter(notesAdapter);
 
