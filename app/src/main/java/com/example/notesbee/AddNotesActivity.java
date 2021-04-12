@@ -23,7 +23,7 @@ public class AddNotesActivity extends AppCompatActivity {
     //private Calendar calendar;
     //private SimpleDateFormat simpleDateFormat;
     private Note note; // Local note used to create alarms and build the save/load with
-    public static WeakReference<AddNotesActivity> weakActivity;
+    private static WeakReference<AddNotesActivity> weakActivity;
     private boolean recognitionStarted = false;
 
 
@@ -137,6 +137,7 @@ public class AddNotesActivity extends AppCompatActivity {
 
     /**
      * Begins voice recognition, this is called when the microphone icon is pressed.
+     * @param view
      */
     public void startVoiceToText(View view) {
         Intent intent = new Intent(this, VoiceRecognition.class);
@@ -149,8 +150,16 @@ public class AddNotesActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Helper method to return a reference to the activity
+     * @return weakActivity
+     */
     public static AddNotesActivity getInstanceActivity() { return weakActivity.get(); }
 
+    /**
+     * Helper method to update voice-to-text caption in notes from a different class
+     * @param text the new text to update the caption with
+     */
     public void setVoiceCaptionText(String text) {
                 TextView textView = (TextView)findViewById(R.id.caption_text);
                 textView.setText(text);
