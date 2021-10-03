@@ -1,11 +1,19 @@
 package com.example.notesbee;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import jp.wasabeef.richeditor.RichEditor;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -13,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -23,9 +32,9 @@ public class AddNotesActivity extends AppCompatActivity {
     //private Calendar calendar;
     //private SimpleDateFormat simpleDateFormat;
     private Note note; // Local note used to create alarms and build the save/load with
-    private static WeakReference<AddNotesActivity> weakActivity;
-    private boolean recognitionStarted = false;
 
+    private SpeechRecognizer speechRecognizer;
+    private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +43,7 @@ public class AddNotesActivity extends AppCompatActivity {
         title=findViewById(R.id.notesTitle);
         ImageButton savenotes= findViewById(R.id.save_note_btn);
         savenotes.setOnClickListener(view -> addDataToDatabase());
-        weakActivity = new WeakReference<>(this);
+
         // Pull note from the database
         note = ((NotesbeeApplication)getApplication()).getDatabase().getNote(((NotesbeeApplication)getApplication()).getSelectedNoteIndex());
 
@@ -51,7 +60,7 @@ public class AddNotesActivity extends AppCompatActivity {
         //findViewById(R.id.vtt_btn).setOnLongClickListener(view -> startVoiceToText(view));
 
 
-        notesContent= findViewById(R.id.notesContent);
+        notesContent = findViewById(R.id.notesContent);
 
         findViewById(R.id.action_undo).setOnClickListener(view -> notesContent.undo());
 
@@ -80,9 +89,7 @@ public class AddNotesActivity extends AppCompatActivity {
 
         findViewById(R.id.action_insert_checkbox).setOnClickListener(v -> notesContent.insertTodo());
 
-
     }
-
 
     /**
      * Flushes all currently stored text and such to the note
@@ -107,28 +114,6 @@ public class AddNotesActivity extends AppCompatActivity {
      * cause this message screen to close.
      */
     private void addDataToDatabase(){
-
-        // We will save all data in a note class then serialize it
-//        note.title = title.getText().toString();
-//        String serial = note.serialize();
-//        Boolean alarm = false;
-//        Date currentDateTime = Calendar.getInstance().getTime();
-
-//        String titleTXT = title.getText().toString();
-//        String contentTXT = notesContent.getHtml();
-//        String dateTXT = currentDateTime.toString();
-//        String alarmTXT = alarm.toString();
-
-
-//        DBHelper DH= new DBHelper(AddNotesActivity.this);
-//
-//        Boolean check_insert_data = DH.insert_user_data(titleTXT, contentTXT, dateTXT, alarmTXT);
-//
-//        if(check_insert_data)
-//            Toast.makeText(AddNotesActivity.this, "New Entry Inserted", Toast.LENGTH_SHORT).show();
-//        else
-//            Toast.makeText(AddNotesActivity.this, "New Entry Not Inserted", Toast.LENGTH_SHORT).show();
-
         flushNote();
         ((NotesbeeApplication)getApplication()).getDatabase().flush(getString(R.string.database_file));
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -140,21 +125,75 @@ public class AddNotesActivity extends AppCompatActivity {
      * @param view
      */
     public void startVoiceToText(View view) {
-        Intent intent = new Intent(this, VoiceRecognition.class);
-        if (recognitionStarted == false) {
-            recognitionStarted = true;
-            startActivity(intent);
-        } else {
-            recognitionStarted = false;
-            VoiceRecognition.getInstanceActivity().onDestroy();
-        }
-    }
+        requestUserPermission();
 
-    /**
-     * Helper method to return a reference to the activity
-     * @return weakActivity
-     */
-    public static AddNotesActivity getInstanceActivity() { return weakActivity.get(); }
+        if(SpeechRecognizer.isRecognitionAvailable(this)) {
+            speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+        } else {
+            setVoiceCaptionText("Error: No speech recognizer service available");
+        }
+
+        final Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "en-US");
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS , 1000000);
+
+        speechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle bundle) {
+                setVoiceCaptionText("Ready for speech");
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+
+            }
+
+            @Override
+            public void onRmsChanged(float v) {
+
+            }
+
+            @Override
+            public void onBufferReceived(byte[] bytes) {
+
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+                speechRecognizer.cancel();
+                //speechRecognizer.destroy();
+                //speechRecognizer.startListening(speechRecognizerIntent);
+                setVoiceCaptionText(" ");
+            }
+
+            @Override
+            public void onError(int i) {
+                setVoiceCaptionText("Error occurred: " + i); //if error code 9 allow permissions for google
+            }
+
+            @Override
+            public void onResults(Bundle bundle) {
+                ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                notesContent.setHtml(data.get(0));
+            }
+
+            @Override
+            public void onPartialResults(Bundle bundle) {
+                ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                notesContent.setHtml(data.get(0));
+            }
+
+            @Override
+            public void onEvent(int i, Bundle bundle) {
+
+            }
+        });
+
+        setVoiceCaptionText("Listening...");
+        speechRecognizer.startListening(speechRecognizerIntent);
+
+    }
 
     /**
      * Helper method to update voice-to-text caption in notes from a different class
@@ -164,5 +203,31 @@ public class AddNotesActivity extends AppCompatActivity {
                 TextView textView = (TextView)findViewById(R.id.caption_text);
                 textView.setText(text);
     }
+
+    /**
+     * Requests user audio permissions
+     */
+    private void requestUserPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) { //if permission never granted, request
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO},
+                    PERMISSIONS_REQUEST_RECORD_AUDIO);
+        }
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, //only applies if user responds to permission query
+                                           int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) { //catch request
+            case PERMISSIONS_REQUEST_RECORD_AUDIO:
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) { //if request granted
+                } else { //else need to return to addnotes (setup onDestroy)
+                    finish();
+                }
+        }
+    }
+
 
 }
