@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -161,21 +163,20 @@ public class AddNotesActivity extends AppCompatActivity {
 
             @Override
             public void onEndOfSpeech() {
-                speechRecognizer.cancel();
-                //speechRecognizer.destroy();
-                //speechRecognizer.startListening(speechRecognizerIntent);
-                setVoiceCaptionText(" ");
+                speechRecognizer.stopListening();
+                removeVoiceToTextCaption();
             }
 
             @Override
             public void onError(int i) {
-                setVoiceCaptionText("Error occurred: " + i); //if error code 9 allow permissions for google
+                setVoiceCaptionText("Error occurred(" + i + ")"); //if error code 9 allow permissions for google
+                removeVoiceToTextCaption();
             }
 
             @Override
             public void onResults(Bundle bundle) {
                 ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                notesContent.setHtml(data.get(0));
+                notesContent.setHtml(data.get(0)); //update html?
             }
 
             @Override
@@ -216,6 +217,12 @@ public class AddNotesActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Catches and processes permission results
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     public void onRequestPermissionsResult(int requestCode, String[] permissions, //only applies if user responds to permission query
                                            int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -223,10 +230,28 @@ public class AddNotesActivity extends AppCompatActivity {
             case PERMISSIONS_REQUEST_RECORD_AUDIO:
                 if (grantResults.length > 0 &&
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) { //if request granted
-                } else { //else need to return to addnotes (setup onDestroy)
+                } else {
                     finish();
                 }
         }
+    }
+
+    /**
+     * Removes text caption on a timer
+     */
+    public void removeVoiceToTextCaption () {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setVoiceCaptionText(" ");
+            }
+        }, 3000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        speechRecognizer.destroy();
     }
 
 
